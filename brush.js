@@ -3,7 +3,7 @@ var regexLib = require('syntaxhighlighter-regex').commonRegExp;
 
 function Brush() {
   var funcs = 'abs avg case cast coalesce convert count current_timestamp ' +
-    'current_user day isnull left lower month nullif replace right ' +
+    'current_user dateadd datediff day getdate isnull left lower month nullif replace right ' +
     'session_user space substring sum system_user upper user year';
 
   var keywords = 'absolute action add after alter as asc at authorization begin bigint ' +
@@ -24,7 +24,7 @@ function Brush() {
     'translation trigger true truncate uncommitted union unique update values ' +
     'varchar varying view when where with work';
 
-  var operators = 'all and any between cross in join like not null or outer some';
+  var operators = 'all and any between cross in inner join left like not natural null or outer right some';
 
   this.regexList = [
     {
@@ -54,8 +54,15 @@ function Brush() {
     {
       regex: new RegExp(this.getKeywords(keywords), 'gmi'),
       css: 'keyword'
-    }
-		];
+    },
+    {
+      regex: /@([\-_a-zA-Z]*)$/gm,
+      css: 'variable'
+    },
+    {
+      regex: /@@([\-_a-zA-Z]*)$/gm,
+      css: 'constants'
+    }		];
 };
 
 Brush.prototype = new BrushBase();
