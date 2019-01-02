@@ -56,11 +56,15 @@ function Brush() {
       css: 'keyword'
     },
     {
-      regex: /@([\-_a-zA-Z]*)$/gm,
+      regex: /#([\w\d_-]*)$/gm,
+      css: 'color3'
+    },
+    {
+      regex: /@([^@][\w_-]*)$/gm,
       css: 'variable'
     },
     {
-      regex: /@@([\-_a-zA-Z]*)$/gm,
+      regex: /@@([\w_-]*)$/gm,
       css: 'constants'
     }		];
 };
