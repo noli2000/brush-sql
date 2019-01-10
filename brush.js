@@ -1,12 +1,9 @@
-var BrushBase = require('brush-base');
-var regexLib = require('syntaxhighlighter-regex').commonRegExp;
-
-function Brush() {
+SyntaxHighlighter.brushes.MSSQL = function() {
   var funcs = 'abs avg case cast coalesce convert count current_timestamp ' +
     'current_user dateadd datediff day getdate isnull left lower month nullif replace right ' +
-    'session_user space substring sum system_user upper user year';
+    'session_user space substring sum system_user upper user year ';
 
-  var keywords = 'absolute action add after alter as asc at authorization begin bigint ' +
+  var keywords = 'absolute action add after alter asc at authorization begin bigint ' +
     'binary bit by cascade char character check checkpoint close collate ' +
     'column commit committed connect connection constraint contains continue ' +
     'create cube current current_date current_time cursor database date ' +
@@ -15,16 +12,17 @@ function Brush() {
     'float for force foreign forward free from full function global goto grant ' +
     'group grouping having hour ignore index inner insensitive insert instead ' +
     'int integer intersect into is isolation key last level load local max min ' +
-    'minute modify move name national nchar next no numeric of off on only ' +
+    'minute modify move name national nchar next no numeric of off only ' +
     'open option order out output partial password precision prepare primary ' +
     'prior privileges procedure public read real references relative repeatable ' +
     'restrict return returns revoke rollback rollup rows rule schema scroll ' +
     'second section select sequence serializable set size smallint static ' +
     'statistics table temp temporary then time timestamp to top transaction ' +
     'translation trigger true truncate uncommitted union unique update values ' +
-    'varchar varying view when where with work';
+    'varchar varying view when where with work failover availability while replica use ' +
+	'waitfor delay go if ';
 
-  var operators = 'all and any between cross in inner join left like not natural null or outer right some';
+  var operators = 'all and any apply as between cross in inner join left like not natural null on or outer right some ';
 
   this.regexList = [
     {
@@ -36,11 +34,11 @@ function Brush() {
       css: 'comments'
     },
     {
-      regex: regexLib.multiLineDoubleQuotedString,
+      regex: SyntaxHighlighter.regexLib.multiLineDoubleQuotedString,
       css: 'string'
     },
     {
-      regex: regexLib.multiLineSingleQuotedString,
+      regex: SyntaxHighlighter.regexLib.multiLineSingleQuotedString,
       css: 'string'
     },
     {
@@ -55,20 +53,26 @@ function Brush() {
       regex: new RegExp(this.getKeywords(keywords), 'gmi'),
       css: 'keyword'
     },
-    {
-      regex: /#([\w\d_-]*)$/gm,
-      css: 'color3'
-    },
-    {
-      regex: /@([^@][\w_-]*)$/gm,
+	{
+      regex: /@([\-a-zA-Z0-9_]*)/gm,
       css: 'variable'
     },
-    {
-      regex: /@@([\w_-]*)$/gm,
+	{
+      regex: /\$\(([\-a-zA-Z0-9_]*\))/gm,
+      css: 'variable'
+    },
+	{
+      regex: /@@([\-a-zA-Z0-9_]*)/gm,
       css: 'constants'
-    }		];
+    },
+	{
+      regex: /:([\-a-zA-Z0-9_]*)/gm,
+      css: 'preprocessor'
+    }
+	]
+	;
 };
 
-Brush.prototype = new BrushBase();
-Brush.aliases = ['sql'];
-module.exports = Brush;
+
+SyntaxHighlighter.brushes.MSSQL.prototype    = new SyntaxHighlighter.Highlighter();
+SyntaxHighlighter.brushes.MSSQL.aliases  = ['sqlserver','tsql', 'mssql'];
